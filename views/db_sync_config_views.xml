@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_db_sync_config_list" model="ir.ui.view">
+        <field name="name">db.sync.config.list</field>
+        <field name="model">db.sync.config</field>
+        <field name="arch" type="xml">
+            <tree string="Database Sync Targets">
+                <field name="name"/>
+                <field name="url"/>
+                <field name="db"/>
+                <field name="username"/>
+                <field name="active" optional="show"/>
+                <field name="max_retries" optional="hide"/>
+                <field name="last_test_result" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_db_sync_config_form" model="ir.ui.view">
+        <field name="name">db.sync.config.form</field>
+        <field name="model">db.sync.config</field>
+        <field name="arch" type="xml">
+            <form string="Database Sync Target">
+                <header>
+                    <button name="action_test_connection" type="object"
+                            string="Test Connection" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger"
+                            invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="active" widget="boolean_toggle"/>
+                            <field name="url" placeholder="http://duplicate-host:8069"/>
+                            <field name="db" placeholder="duplicate_db"/>
+                        </group>
+                        <group>
+                            <field name="username"/>
+                            <field name="api_key" password="True"/>
+                            <field name="max_retries"/>
+                            <field name="timeout"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Models to Sync">
+                            <field name="model_ids" nolabel="1">
+                                <tree>
+                                    <field name="model"/>
+                                    <field name="name"/>
+                                    <field name="transient" optional="hide"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Last Test" invisible="not last_test_result">
+                            <group>
+                                <field name="last_test_result" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_db_sync_config" model="ir.actions.act_window">
+        <field name="name">Sync Targets</field>
+        <field name="res_model">db.sync.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a sync target</p>
+            <p>Configure the duplicate Odoo instance (URL, database, user, API key)
+               and choose which models are replicated.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_db_sync_root"
+              name="Database Sync"
+              parent="base.menu_administration"
+              sequence="60"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_db_sync_config"
+              name="Sync Targets"
+              parent="menu_db_sync_root"
+              action="action_db_sync_config"
+              sequence="10"
+              groups="base.group_system"/>
+</odoo>

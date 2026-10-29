@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_db_sync_config_system,db.sync.config system,model_db_sync_config,base.group_system,1,1,1,1
+access_db_sync_mapping_system,db.sync.mapping system,model_db_sync_mapping,base.group_system,1,1,1,1
+access_db_sync_log_system,db.sync.log system,model_db_sync_log,base.group_system,1,1,1,1
+access_db_sync_engine_system,db.sync.engine system,model_db_sync_engine,base.group_system,1,1,1,1
